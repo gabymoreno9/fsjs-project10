@@ -1,9 +1,10 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 
-function CourseDetail() {
+function CourseDetail(props) {
   let params = useParams();
+  let navigate = useNavigate();
   let [course, setCourse] = React.useState({User:{}})
   
   React.useEffect(function(){
@@ -12,12 +13,23 @@ function CourseDetail() {
       .then(results => setCourse(results))
   }, [params.id])
 
+  async function deleteCourse() {
+    await props.deleteCourse(params.id)
+    navigate('/')
+  }
+
   return (
     <main>
       <div className="actions--bar">
         <div className="wrap">
-          <Link to={`/courses/${course.id}/update`} className="button">Update Course</Link>
-          <a className="button" href="#">Delete Course</a>
+          {props.user !== null && props.user.id === course.User.id ?
+            <>
+              <Link to={`/courses/${course.id}/update`} className="button">Update Course</Link>
+              <Link to={`/courses/${course.id}`} className="button" onClick={deleteCourse}>Delete Course</Link>
+            </>
+          :
+            null
+          }
           <Link to='/' className="button button-secondary">Return to List</Link>
         </div>
       </div>
@@ -30,10 +42,7 @@ function CourseDetail() {
               <h3 className="course--detail--title">Course</h3>
               <h4 className="course--name">{course.title}</h4>
               <p>By {course.User.firstName} {course.User.lastName}</p>
-              <p>
-                <ReactMarkdown>{course.description}</ReactMarkdown>
-              </p>
-
+              <ReactMarkdown>{course.description}</ReactMarkdown>
             </div>
             <div>
               <h3 className="course--detail--title">Estimated Time</h3>

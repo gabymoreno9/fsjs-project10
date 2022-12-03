@@ -2,31 +2,43 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 
-function CreateCourse() {
+function CreateCourse(props) {
   let navigate = useNavigate()
   let [courseTitle, setCourseTitle] = React.useState('')
   let [estimatedTime, setEstimatedTime] = React.useState('')
   let [materialsNeeded, setMaterialsNeeded] = React.useState('')
   let [courseDescription, setCourseDescription] = React.useState('')
+  let [formErrors, setFormErrors] = React.useState(null)
 
   function cancelCreateCourse(){
     navigate('/')
   }
-  function createCourse(){
-
+  async function createCourse(event){
+    event.preventDefault()
+    let result = await props.createCourse(courseTitle, courseDescription, estimatedTime, materialsNeeded)
+    setFormErrors(result.errors)
+    if (!result.errors) {
+      navigate('/')
+    }
   }
 
   return (
     <main>
       <div className="wrap">
         <h2>Create Course</h2>
-        <div className="validation--errors">
-          <h3>Validation Errors</h3>
-          <ul>
-            <li>Please provide a value for "Title"</li>
-            <li>Please provide a value for "Description"</li>
-          </ul>
-        </div>
+        {/* ui to show the validation errors  */}
+        {formErrors ?
+          <div className="validation--errors">
+            <h3>Validation Errors</h3>
+            <ul>
+              {formErrors.map(error =>
+                <li key={error}>{error}</li>
+              )}
+            </ul>
+          </div>
+        :
+          null
+        }
 
         <form>
           <div className="main--flex">

@@ -2,24 +2,44 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 
-function UserSignUp() {
+function UserSignUp(props) {
   let navigate = useNavigate()
   let [firstName, setFirstName] = React.useState('')
   let [lastName, setLastName] = React.useState('')
   let [emailAddress, setEmailAddress] = React.useState('')
   let [password, setPassword] = React.useState('')
+  let [formErrors, setFormErrors] = React.useState(null)
     
   function cancelSignUp(){
     navigate('/')
   }
-  function signUp(){
+  async function signUp(event){
+    event.preventDefault()
+    let result = await props.signUp(firstName, lastName, emailAddress, password)
+    setFormErrors(result.errors)
+    if (!result.errors) {
+      navigate('/')
+    }
   }
 
   return (
     <main>
       <div className="form--centered">
         <h2>Sign Up</h2>
-        
+        {/* ui to show validation errors  */}
+        {formErrors ?
+          <div className="validation--errors">
+            <h3>Validation Errors</h3>
+            <ul>
+              {formErrors.map(error =>
+                <li key={error}>{error}</li>
+              )}
+            </ul>
+          </div>
+        :
+          null
+        }
+
         <form>
           <label htmlFor="firstName">First Name </label>
           <input id="firstName" name="firstName" type="text" value = {firstName} onChange = {e => setFirstName(e.target.value)} />
