@@ -13,6 +13,7 @@ function UserSignUp(props) {
   function cancelSignUp(){
     navigate('/')
   }
+  //sign up function
   async function signUp(event){
     event.preventDefault()
     let result = await props.signUp(firstName, lastName, emailAddress, password)

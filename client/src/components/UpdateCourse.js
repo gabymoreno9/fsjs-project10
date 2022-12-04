@@ -25,7 +25,7 @@ function UpdateCourse(props) {
   function cancelUpdateCourse(){
     navigate(`/courses/${params.id}`)
   }
-  // if no erros happen while updating, it takes the user to that course page
+  // if no errors happen while updating, it takes the user to that course page
   async function updateCourse(event){
     event.preventDefault()
     let result = await props.updateCourse(params.id, courseTitle, courseDescription, estimatedTime, materialsNeeded)

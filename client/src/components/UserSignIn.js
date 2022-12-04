@@ -16,6 +16,7 @@ function UserSignIn(props) {
     event.preventDefault()
     let result = await props.signIn(emailAddress, password)
     setFormErrors(result.errors)
+    // if the sign in doesn't have errors, the user proceeds to the homepage
     if (!result.errors) {
       navigate('/')
     }
@@ -25,6 +26,7 @@ function UserSignIn(props) {
     <main>
       <div className="form--centered">
         <h2>Sign In</h2>
+        {/* handles the ui for the validation error banners */}
         {formErrors ?
           <div className="validation--errors">
             <h3>Validation Errors</h3>

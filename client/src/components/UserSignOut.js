@@ -11,6 +11,7 @@ function UserSignOut(props) {
     props.signOut()
     navigate('/')
   })
+  //returning an empty fragment bc it would not work if I returned nothing. could probably return null here too
   return <></>
 }
 

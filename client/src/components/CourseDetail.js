@@ -7,12 +7,14 @@ function CourseDetail(props) {
   let navigate = useNavigate();
   let [course, setCourse] = React.useState({User:{}})
   
+  //when the component loads, fetch the course and store it in the components state
   React.useEffect(function(){
     fetch(`http://localhost:5000/api/courses/${params.id}`)
       .then(results => results.json())
       .then(results => setCourse(results))
   }, [params.id])
 
+  //delete course function
   async function deleteCourse() {
     await props.deleteCourse(params.id)
     navigate('/')

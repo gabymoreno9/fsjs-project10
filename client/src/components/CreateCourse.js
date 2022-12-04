@@ -10,6 +10,7 @@ function CreateCourse(props) {
   let [courseDescription, setCourseDescription] = React.useState('')
   let [formErrors, setFormErrors] = React.useState(null)
 
+  //when cancelling it will take you back to the homepage
   function cancelCreateCourse(){
     navigate('/')
   }
@@ -17,6 +18,7 @@ function CreateCourse(props) {
     event.preventDefault()
     let result = await props.createCourse(courseTitle, courseDescription, estimatedTime, materialsNeeded)
     setFormErrors(result.errors)
+    // if there are no errors when creating the course, send back to homepage
     if (!result.errors) {
       navigate('/')
     }
